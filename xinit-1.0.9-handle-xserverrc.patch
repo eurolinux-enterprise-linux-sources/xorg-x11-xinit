@@ -1,0 +1,53 @@
+From d315445cb85876cda56f46cb657167d4eb906ba0 Mon Sep 17 00:00:00 2001
+From: Jeremy Huddleston <jeremyhu@freedesktop.org>
+Date: Wed, 28 May 2008 11:54:22 -0700
+Subject: [PATCH] Properly handle using xserverrc
+
+---
+ startx.cpp | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/startx.cpp b/startx.cpp
+index 9266341..8ffdc70 100644
+--- a/startx.cpp
++++ b/startx.cpp
+@@ -161,12 +161,6 @@ case $1 in
+ esac
+ #endif
+ 
+-if [ -f $userserverrc ]; then
+-    defaultserverargs=$userserverrc
+-elif [ -f $sysserverrc ]; then
+-    defaultserverargs=$sysserverrc
+-fi
+-
+ whoseargs="client"
+ while [ x"$1" != x ]; do
+     case "$1" in
+@@ -218,13 +212,19 @@ fi
+ 
+ XCOMM process server arguments
+ if [ x"$server" = x ]; then
+-    XCOMM if no server arguments or display either, use rc file instead
++    server=$defaultserver
++
++    XCOMM if no server arguments or display either, use defaults
+     if [ x"$serverargs" = x -a x"$display" = x ]; then
+-	server=$defaultserver
++	XCOMM For compatibility reasons, only use xserverrc if there were no server command line arguments
++	if [ -f $userserverrc ]; then
++	    server=$userserverrc
++	elif [ -f $sysserverrc ]; then
++	    server=$sysserverrc
++	fi
++
+ 	serverargs=$defaultserverargs
+ 	display=$defaultdisplay
+-    else
+-	server=$defaultserver
+     fi
+ fi
+ 
+-- 
+1.8.1.4
+

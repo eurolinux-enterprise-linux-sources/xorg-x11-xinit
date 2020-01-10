@@ -3,7 +3,7 @@
 Summary:   X.Org X11 X Window System xinit startup scripts
 Name:      xorg-x11-%{pkgname}
 Version:   1.0.9
-Release:   13%{?dist}
+Release:   14%{?dist}
 License:   MIT
 Group:     User Interface/X
 URL:       http://www.x.org
@@ -25,6 +25,7 @@ Source100: ck-xinit-session.c
 Patch1: xinit-1.0.2-client-session.patch
 Patch2: xinit-1.0.7-poke-ck.patch
 Patch3: xinit-1.0.9-unset.patch
+Patch4: xinit-1.0.9-handle-xserverrc.patch
 
 BuildRequires: pkgconfig
 BuildRequires: libX11-devel
@@ -68,6 +69,7 @@ Allows legacy ~/.xsession and ~/.Xclients files to be used from display managers
 %patch1 -p1 -b .client-session
 #%patch2 -p1 -b .poke-ck
 %patch3 -p1 -b .unset
+%patch4 -p1 -b .xserverrc
 
 %build
 autoreconf
@@ -131,6 +133,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/xsessions/xinit-compat.desktop
 
 %changelog
+* Fri May 10 2013 Peter Hutterer <peter.hutterer@redhat.com> 1.0.9-14
+- Handle xserverrc (#811289)
+
 * Tue Nov 10 2009 Matěj Cepl <mcepl@redhat.com> - 1.0.9-13
 - Fix SELinux labels on $errfile (fixes bug# 530419)
 
