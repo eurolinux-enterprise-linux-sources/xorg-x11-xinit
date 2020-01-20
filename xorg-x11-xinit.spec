@@ -3,7 +3,7 @@
 Summary:   X.Org X11 X Window System xinit startup scripts
 Name:      xorg-x11-%{pkgname}
 Version:   1.3.2
-Release:   14%{?dist}
+Release:   8%{?dist}
 License:   MIT
 Group:     User Interface/X
 URL:       http://www.x.org
@@ -118,30 +118,6 @@ install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compa
 %{_datadir}/xsessions/xinit-compat.desktop
 
 %changelog
-* Mon Sep  1 2014 Hans de Goede <hdegoede@redhat.com> - 1.3.2-14
-- Xclients: only try to start gnome classic session if installed
-- Resolves: rhbz#1078948
-- startx: Only specify vt argument automatically when run from a vt
-- Resolves: rhbz#1083188
-
-* Mon Mar 10 2014 Adam Jackson <ajax@redhat.com> 1.3.2-13
-- Xclients: Fix --session argument for classic (#1074174)
-
-* Sat Feb 15 2014 Soren Sandmann <ssp@redhat.com> - 1.3.2-12
-- XClients: Use classic mode for the GNOME session (#960520)
-
-* Wed Feb 12 2014 Adam Jackson <ajax@redhat.com> 1.3.2-11.1
-- Mass rebuild
-
-* Mon Jan 6 2014 Soren Sandmann <ssp@redhat.com> - 1.3.2-11
-- Rebuild
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.3.2-10
-- Mass rebuild 2013-12-27
-
-* Thu Dec 19 2013 Soren Sandmann <ssp@redhat.com> - 1.3.2-9
-- Fix changelog (#1043626)
-
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
@@ -296,7 +272,7 @@ install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compa
 * Mon May 21 2007 Adam Jackson <ajax@redhat.com> 1.0.2-21
 - localuser.sh: Run silently.
 
-* Sun Apr 22 2007 Matthias Clasen <mclasen@redhat.com> 1.0.2-20
+* Sat Apr 22 2007 Matthias Clasen <mclasen@redhat.com> 1.0.2-20
 - Don't install INSTALL
 
 * Thu Apr 19 2007 Warren Togami <wtogami@redhat.com> 1.0.2-19
