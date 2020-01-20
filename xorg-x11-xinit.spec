@@ -2,8 +2,8 @@
 
 Summary:   X.Org X11 X Window System xinit startup scripts
 Name:      xorg-x11-%{pkgname}
-Version:   1.3.2
-Release:   8%{?dist}
+Version:   1.3.4
+Release:   1%{?dist}
 License:   MIT
 Group:     User Interface/X
 URL:       http://www.x.org
@@ -24,10 +24,10 @@ Source19: xinit-compat
 # Fedora specific patches
 
 Patch1: xinit-1.0.2-client-session.patch
-# Fix startx to run on the same tty as user to avoid new session. 
-# https://bugzilla.redhat.com/show_bug.cgi?id=806491
-Patch2: xorg-x11-xinit-1.3.2-systemd-logind.patch
-Patch3: xinit-1.0.9-unset.patch
+Patch2: xinit-1.0.9-unset.patch
+Patch3: 0001-startx-Pass-keeptty-when-telling-the-server-to-start.patch
+Patch4: 0002-startx-Fix-startx-picking-an-already-used-display-nu.patch
+Patch5: 0003-startx-Make-startx-auto-display-select-work-with-per.patch
 
 BuildRequires: pkgconfig
 BuildRequires: libX11-devel
@@ -56,20 +56,18 @@ Allows legacy ~/.xsession and ~/.Xclients files to be used from display managers
 %prep
 %setup -q -n %{pkgname}-%{version}
 %patch1 -p1 -b .client-session
-%patch2 -p1 -b .systemd-logind
-%patch3 -p1 -b .unset
+%patch2 -p1 -b .unset
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 autoreconf
 %configure
-# FIXME: Upstream should default to XINITDIR being this.  Make a patch to
-# Makefile.am and submit it in a bug report or check into CVS.
-make XINITDIR=%{_sysconfdir}/X11/xinit
+make %{?_smp_mflags}
 
 %install
-# FIXME: Upstream should default to XINITDIR being this.  Make a patch to
-# Makefile.am and submit it in a bug report or check into CVS.
-make install DESTDIR=$RPM_BUILD_ROOT XINITDIR=%{_sysconfdir}/X11/xinit
+%make_install
 install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compat.desktop
 
 # Install Red Hat custom xinitrc, etc.
@@ -118,6 +116,36 @@ install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compa
 %{_datadir}/xsessions/xinit-compat.desktop
 
 %changelog
+* Tue May 12 2015 Hans de Goede <hdegoede@redhat.com> - 1.3.4-1
+- xinit 1.3.4
+- Drop xorg-x11-xinit-1.3.2-systemd-logind.patch (included upstream in 1.3.4)
+- Add patches from Fedora to fix automatically finding a free display-number
+- Resolves: rhbz#1194894
+
+* Mon Sep  1 2014 Hans de Goede <hdegoede@redhat.com> - 1.3.2-14
+- Xclients: only try to start gnome classic session if installed
+- Resolves: rhbz#1078948
+- startx: Only specify vt argument automatically when run from a vt
+- Resolves: rhbz#1083188
+
+* Mon Mar 10 2014 Adam Jackson <ajax@redhat.com> 1.3.2-13
+- Xclients: Fix --session argument for classic (#1074174)
+
+* Sat Feb 15 2014 Soren Sandmann <ssp@redhat.com> - 1.3.2-12
+- XClients: Use classic mode for the GNOME session (#960520)
+
+* Wed Feb 12 2014 Adam Jackson <ajax@redhat.com> 1.3.2-11.1
+- Mass rebuild
+
+* Mon Jan 6 2014 Soren Sandmann <ssp@redhat.com> - 1.3.2-11
+- Rebuild
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.3.2-10
+- Mass rebuild 2013-12-27
+
+* Thu Dec 19 2013 Soren Sandmann <ssp@redhat.com> - 1.3.2-9
+- Fix changelog (#1043626)
+
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.2-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
@@ -272,7 +300,7 @@ install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compa
 * Mon May 21 2007 Adam Jackson <ajax@redhat.com> 1.0.2-21
 - localuser.sh: Run silently.
 
-* Sat Apr 22 2007 Matthias Clasen <mclasen@redhat.com> 1.0.2-20
+* Sun Apr 22 2007 Matthias Clasen <mclasen@redhat.com> 1.0.2-20
 - Don't install INSTALL
 
 * Thu Apr 19 2007 Warren Togami <wtogami@redhat.com> 1.0.2-19

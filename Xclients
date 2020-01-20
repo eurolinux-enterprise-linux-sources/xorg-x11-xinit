@@ -29,9 +29,10 @@ fi
 # now if we can reach here, either no desktop file was present,
 # or the desktop requested is not installed.
 
-if [ -n "$GSESSION" ]; then
+if [ -n "$GSESSION" -a -f /usr/share/xsessions/gnome-classic.desktop ]; then
     # by default, we run GNOME.
-    exec "$GSESSION"
+    export GNOME_SHELL_SESSION_MODE=classic
+    exec "$GSESSION" --session=gnome-classic
 elif [ -n "$STARTKDE" ]; then
     # if GNOME isn't installed, try KDE.
     exec "$STARTKDE"
