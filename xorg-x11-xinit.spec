@@ -3,7 +3,7 @@
 Summary:   X.Org X11 X Window System xinit startup scripts
 Name:      xorg-x11-%{pkgname}
 Version:   1.3.4
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   MIT
 Group:     User Interface/X
 URL:       http://www.x.org
@@ -116,6 +116,9 @@ install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compa
 %{_datadir}/xsessions/xinit-compat.desktop
 
 %changelog
+* Fri Aug 25 2017 Adam Jackson <ajax@redhat.com> - 1.3.4-2
+- Make xinitrc-common tolerate set -u
+
 * Tue May 12 2015 Hans de Goede <hdegoede@redhat.com> - 1.3.4-1
 - xinit 1.3.4
 - Drop xorg-x11-xinit-1.3.2-systemd-logind.patch (included upstream in 1.3.4)
