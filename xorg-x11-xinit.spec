@@ -3,7 +3,7 @@
 Summary:   X.Org X11 X Window System xinit startup scripts
 Name:      xorg-x11-%{pkgname}
 Version:   1.3.2
-Release:   13%{?dist}
+Release:   14%{?dist}
 License:   MIT
 Group:     User Interface/X
 URL:       http://www.x.org
@@ -118,6 +118,12 @@ install -p -m644 -D %{SOURCE18} $RPM_BUILD_ROOT%{_datadir}/xsessions/xinit-compa
 %{_datadir}/xsessions/xinit-compat.desktop
 
 %changelog
+* Mon Sep  1 2014 Hans de Goede <hdegoede@redhat.com> - 1.3.2-14
+- Xclients: only try to start gnome classic session if installed
+- Resolves: rhbz#1078948
+- startx: Only specify vt argument automatically when run from a vt
+- Resolves: rhbz#1083188
+
 * Mon Mar 10 2014 Adam Jackson <ajax@redhat.com> 1.3.2-13
 - Xclients: Fix --session argument for classic (#1074174)
 
